@@ -1,6 +1,9 @@
-Rohadt szemetek! Elmehettek a francba a kérdőíveitekkel!
+# rtlmost-downloader
+A videók letöltését teszi lehetővé a megújult rtlmost.hu oldalról, regisztráció és bejelentkezés nélkül.
 
-## Használat
+## Telepítés / használat
 ```sh
-npx rtlmost-downloader
+npm i -g rtlmost-downloader
+
+rtlmost-downloader
 ```
