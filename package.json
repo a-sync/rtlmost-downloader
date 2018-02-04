@@ -1,0 +1,27 @@
+{
+  "name": "rtlmost-downloader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a-sync/rtlmost-downloader.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/a-sync/rtlmost-downloader/issues"
+  },
+  "homepage": "https://github.com/a-sync/rtlmost-downloader",
+  "dependencies": {
+    "ffmpeg-static": "^2.1.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "got": "^8.0.3",
+    "inquirer": "^5.0.1",
+    "progressbar": "^1.3.0"
+  }
+}
