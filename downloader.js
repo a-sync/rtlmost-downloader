@@ -12,6 +12,7 @@ function download(url, file) {
     ffmpeg(url)
         .videoCodec('copy')
         .audioCodec('copy')
+        .format('mp4')
         /*
         .addOption([
             '-c copy',
@@ -52,5 +53,5 @@ function parseTimeStamp(str) {
     re += parseInt(tsArr[1], 10) * 60; // minutes
     re += parseFloat(tsArr[2]); // seconds
 
-    return Math.round(re);
+    return Math.floor(re);
 }
