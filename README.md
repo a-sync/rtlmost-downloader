@@ -1,7 +1,12 @@
 # rtlmost-downloader
 A videók letöltését teszi lehetővé a megújult rtlmost.hu oldalról, regisztráció és bejelentkezés nélkül.
 
-## Telepítés / használat
+## Használat
+```sh
+npx rtlmost-downloader
+```
+
+## Telepítés parancsként
 ```sh
 npm i -g rtlmost-downloader
 
