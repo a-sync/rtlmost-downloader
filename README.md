@@ -1,6 +1,7 @@
 # rtlmost-downloader
 A videók letöltését teszi lehetővé a megújult rtlmost.hu oldalról, regisztráció és bejelentkezés nélkül.
-![rtlmost-downloader](https://user-images.githubusercontent.com/14183614/35774652-0d553860-0976-11e8-99bc-b50a7344093d.gif)
+![rtlmost-downloader](https://user-images.githubusercontent.com/14183614/35911255-97e75de8-0bf9-11e8-8e73-9eb749521979.gif)
+
 
 ## Használat
 ```sh
