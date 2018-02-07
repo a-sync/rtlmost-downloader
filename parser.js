@@ -1,41 +1,53 @@
 'use strict';
 
 const got = require('got');
-const ProgressBar = require('progressbar');
+const ora = require('ora');
 
 const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36';
 let data = '';
 let foundMedia = [];
 
-function load(params) {
+const loadingText = 'Oldal betöltése... ';
+const loadingFailedText = 'Oldal betöltése sikertelen!';
+const parsingFailedText = 'Videó URL kinyerése sikertelen!';
+
+function load(url) {
     data = '';
 
-    const progress = ProgressBar.create().step('Oldal betöltése...').setTotal(100);
-    return got(params.url, {
+    const spinner = ora(loadingText).start();
+    return got(url, {
         headers: {
             'user-agent': userAgent
         }
     })
+    /*
     .on('downloadProgress', data => {
-        //console.log('downloadProgress', data);
-        progress.setTick(data.percent * 100);
+        // Debug: console.log('downloadProgress', data);
+        spinner.text = loadingText + '(' + Math.floor(data.percent * 100) + '%)';
     })
+    */
     .then(res => {
-        //console.log('got:res.body.length', res.body.length);
-        progress.finish();
-
+        // Debug: console.log('got:res.body.length', res.body.length);
         data = res.body || '';
-        return detect();
+        return parse();
+    })
+    .then(re => {
+        if (Array.isArray(re) && re.length > 0) {
+            spinner.succeed();
+        } else {
+            spinner.fail(parsingFailedText);
+        }
+        return re;
     })
     .catch(err => {
-        progress.finish();
-        console.error('Oldal betöltése sikertelen!', err.message);
+        console.error(err.message);
+        spinner.fail(loadingFailedText);
     });
 }
 
 module.exports.load = load;
 
-function detect() {
+function parse() {
     foundMedia.length = 0;
 
     const splitData = data.split('"full_physical_path":"');
@@ -45,18 +57,15 @@ function detect() {
         }
     });
 
-    if (foundMedia.length > 0) {
-        return true;
-    } else {
-        console.error('Videó URL kinyerése sikertelen!');
-        return false;
+    foundMedia = foundMedia.filter(m => {
+        return (m.indexOf('_drmnp.ism/') === -1);
+    });
+
+    if (foundMedia.length === 0) {
+        console.error(parsingFailedText);
     }
-}
 
-module.exports.detect = detect;
-
-function getMediaList() {
     return foundMedia;
 }
 
-module.exports.getMediaList = getMediaList;
+module.exports.parse = parse;

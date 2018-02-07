@@ -1,17 +1,17 @@
 {
   "name": "rtlmost-downloader",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A videók letöltését teszi lehetővé a megújult rtlmost.hu oldalról, regisztráció és bejelentkezés nélkül.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node bin/rtlmost-downloader.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/a-sync/rtlmost-downloader.git"
   },
-  "author": "",
+  "author": "a-sync@devs.space",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/a-sync/rtlmost-downloader/issues"
@@ -22,7 +22,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "got": "^8.0.3",
     "inquirer": "^5.0.1",
-    "progressbar": "^1.3.0"
+    "ora": "^1.4.0"
   },
   "bin": {
     "rtlmost-downloader": "./bin/rtlmost-downloader.js"
