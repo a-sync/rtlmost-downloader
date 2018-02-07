@@ -22,6 +22,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "got": "^8.0.3",
     "inquirer": "^5.0.1",
+    "minimist": "^1.2.0",
     "ora": "^1.4.0"
   },
   "bin": {
