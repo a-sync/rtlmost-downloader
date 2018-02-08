@@ -18,11 +18,10 @@ rtlmost-downloader
 
 ## Adatbevitel parancssori argumentumokkal
 
-### Telepítve
 ```sh
+# telepítve
 rtlmost-downloader --url <rtlmost_link> --output <fájl_név>
 
 # vagy forrásból
-
 npm start -- --url <rtlmost_link> --output <fájl_név>
 ```
