@@ -4,8 +4,14 @@ A videók letöltését teszi lehetővé a megújult rtlmost.hu oldalról, regis
 
 
 ## Használat
+### Adatbevitel parancssor dialógussal
 ```sh
 npx rtlmost-downloader
+```
+
+### Adatbevitel parancssori argumentumokkal
+```sh
+node bin/rtlmost-downloader.js --url <rtlmost_url> --output <filename>
 ```
 
 ## Telepítés parancsként
