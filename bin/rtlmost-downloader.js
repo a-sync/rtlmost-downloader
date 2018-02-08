@@ -2,20 +2,18 @@
 
 const {setup, parser, downloader} = require('../index.js');
 
-
 if (process.argv.length > 2) {
-    setup.parseCmdArgs().then(function (params){
-        download(params);
-    }).catch(err => { 
-        console.error(err.message); 
-    });
-}
-else {
-    setup.showPrompts().then(function (params){
-        download(params);
-    }).catch(err => {
+    setup.parseCmdArgs()
+    .then(download)
+    .catch(err => {
         console.error(err.message);
-    });    
+    });
+} else {
+    setup.showPrompts()
+    .then(download)
+    .catch(err => {
+        console.error(err.message);
+    });
 }
 
 function download(params) {
@@ -38,4 +36,4 @@ function download(params) {
     ).catch(err => {
         console.error(err.message);
     });
-};
+}
