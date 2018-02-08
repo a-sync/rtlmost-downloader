@@ -4,7 +4,6 @@ const inquirer = require('inquirer');
 const cmdArgs = require('minimist')(process.argv.slice(2));
 
 const dateObj = new Date();
-let defaultFileName = String(dateObj.getTime() / 1000);
 
 function parseCmdArgs() {
     return new Promise((resolve, reject) => {
@@ -38,6 +37,7 @@ function showPrompts() {
         }
     ])
     .then(params1 => {
+        const defaultFileName = parseFileNameFromRtlMostUrl(params1.url) || String(dateObj.getTime() / 1000);
         /* Ne kérdezzen rá a fájlnévre, csak ha muszáj:
         if (defaultFileName) {
             return {url: params1.url, file: defaultFileName + '.mp4'};
@@ -113,7 +113,6 @@ function isValidFileName(str) {
 
 function isValidURL(url) {
     if (url.indexOf('https://www.rtlmost.hu/') === 0) {
-        defaultFileName = parseFileNameFromRtlMostUrl(url);
         return true;
     }
 
