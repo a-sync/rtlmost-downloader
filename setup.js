@@ -3,7 +3,9 @@
 const inquirer = require('inquirer');
 const cmdArgs = require('minimist')(process.argv.slice(2));
 
-let defaultFileName = '';
+const dateObj = new Date();
+let defaultFileName = String(dateObj.getTime() / 1000);
+
 function parseCmdArgs() {
     return new Promise((resolve, reject) => {
         if (!Object.prototype.hasOwnProperty.call(cmdArgs, 'url')) {
@@ -19,9 +21,9 @@ function parseCmdArgs() {
             cmdArgs.output = parseFileNameFromRtlMostUrl(cmdArgs.url);
         }
 
-        const filename = createProperFilename(String(cmdArgs.output));
+        const fileName = createProperFileName(String(cmdArgs.output));
 
-        return resolve({url: cmdArgs.url, file: filename});
+        return resolve({url: cmdArgs.url, file: fileName});
     });
 }
 
@@ -47,7 +49,7 @@ function showPrompts() {
             message: 'Fájl név:',
             default: defaultFileName,
             validate: isValidFileName,
-            filter: createProperFilename
+            filter: createProperFileName
         }])
         .then(params2 => {
             return {url: params1.url, file: params2.file};
@@ -118,14 +120,14 @@ function isValidURL(url) {
     return 'Az alkalmazás csak https://www.rtlmost.hu/* oldalakkal működik!';
 }
 
-function createProperFilename(filename) {
-    if (!filename) {
-        filename = String((new Date).getTime() / 1000);
+function createProperFileName(fileName) {
+    if (!fileName) {
+        fileName = String(dateObj.getTime() / 1000);
     }
 
-    if (!filename.slice(-4) === '.mp4') {
-        return filename;
+    if (!fileName.slice(-4) === '.mp4') {
+        return fileName;
     }
 
-    return filename + '.mp4';
+    return fileName + '.mp4';
 }

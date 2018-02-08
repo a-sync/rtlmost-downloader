@@ -61,10 +61,6 @@ function parse() {
         return (m.indexOf('_drmnp.ism/') === -1);
     });
 
-    if (foundMedia.length === 0) {
-        console.error(parsingFailedText);
-    }
-
     return foundMedia;
 }
 
