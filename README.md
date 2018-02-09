@@ -17,7 +17,6 @@ rtlmost-downloader
 ```
 
 ## Indítás parancssori paraméterekkel
-
 ```sh
 # telepítve
 rtlmost-downloader --url <rtlmost_link> --output <fájl_név>

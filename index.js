@@ -1,8 +1,8 @@
 'use strict';
 
-const setup = require('./setup');
-const parser = require('./parser');
-const downloader = require('./downloader');
+const setup = require('./lib/setup');
+const parser = require('./lib/parser');
+const downloader = require('./lib/downloader');
 
 module.exports.setup = setup;
 module.exports.parser = parser;
