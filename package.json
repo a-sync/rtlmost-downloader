@@ -1,6 +1,6 @@
 {
   "name": "rtlmost-downloader",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "A videók letöltését teszi lehetővé a megújult rtlmost.hu oldalról, regisztráció és bejelentkezés nélkül.",
   "main": "index.js",
   "scripts": {
@@ -18,12 +18,12 @@
   },
   "homepage": "https://github.com/a-sync/rtlmost-downloader",
   "dependencies": {
-    "ffmpeg-static": "^2.1.0",
+    "ffmpeg-static": "^2.3.0",
     "fluent-ffmpeg": "^2.1.2",
-    "got": "^8.0.3",
-    "inquirer": "^5.0.1",
+    "got": "^8.3.2",
+    "inquirer": "^6.0.0",
     "minimist": "^1.2.0",
-    "ora": "^1.4.0"
+    "ora": "^2.1.0"
   },
   "bin": {
     "rtlmost-downloader": "./bin/rtlmost-downloader.js"
