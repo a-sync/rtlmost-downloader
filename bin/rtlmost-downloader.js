@@ -5,13 +5,7 @@ const {setup, parser, downloader} = require('../index.js');
 
 if (process.argv.length > 2) {
     setup.parseCmdArgs()
-    .then(
-        params => {
-            return parser.load(params.url).then(
-                videoUrls => downloader.download(findGoodTarget(videoUrls), params.file)
-            );
-        }
-    )
+    .then(download)
     .catch(err => {
         console.error(err.message);
     });
@@ -29,7 +23,7 @@ function download(params) {
             if (Array.isArray(videoUrls) && videoUrls.length > 0) {
                 const targetUrl = findGoodTarget(videoUrls);
 
-                if (targetUrl) {
+                if (targetUrl || process.argv.length > 2) {
                     downloader.download(targetUrl, params.file);
                 } else {
                     return setup.showMediaSelector(videoUrls, 0).then(
@@ -46,10 +40,6 @@ function download(params) {
 }
 
 function findGoodTarget(videoUrls) {
-    if(!Array.isArray(videoUrls) && videoUrls.length === 0) {
-        return undefined;
-    }
-
     return videoUrls
         .filter(url => {
             return (url.indexOf('_drmnp.ism/') === -1);
