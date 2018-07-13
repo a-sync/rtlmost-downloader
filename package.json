@@ -1,6 +1,6 @@
 {
   "name": "rtlmost-downloader",
-  "version": "1.1.6",
+  "version": "1.2.0",
   "description": "A videók letöltését teszi lehetővé a megújult rtlmost.hu oldalról, regisztráció és bejelentkezés nélkül.",
   "main": "index.js",
   "scripts": {

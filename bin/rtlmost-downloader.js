@@ -1,10 +1,17 @@
 #!/usr/bin/env node
+process.title = 'rtlmost-downloader (@a-sync)';
 
 const {setup, parser, downloader} = require('../index.js');
 
 if (process.argv.length > 2) {
     setup.parseCmdArgs()
-    .then(download)
+    .then(
+        params => {
+            return parser.load(params.url).then(
+                videoUrls => downloader.download(findGoodTarget(videoUrls), params.file)
+            );
+        }
+    )
     .catch(err => {
         console.error(err.message);
     });
@@ -20,20 +27,35 @@ function download(params) {
     return parser.load(params.url).then(
         videoUrls => {
             if (Array.isArray(videoUrls) && videoUrls.length > 0) {
-                /* Videó fájl választó:
-                if (videoUrls.length > 1) {
-                    return setup.showMediaSelector(videoUrls, 1).then(
+                const targetUrl = findGoodTarget(videoUrls);
+
+                if (targetUrl) {
+                    downloader.download(targetUrl, params.file);
+                } else {
+                    return setup.showMediaSelector(videoUrls, 0).then(
                         selected => {
                             downloader.download(selected.media, params.file);
                         }
                     );
                 }
-                */
-
-                downloader.download(videoUrls[videoUrls.length - 1], params.file);
             }
         }
     ).catch(err => {
         console.error(err.message);
     });
 }
+
+function findGoodTarget(videoUrls) {
+    if(!Array.isArray(videoUrls) && videoUrls.length === 0) {
+        return undefined;
+    }
+
+    return videoUrls
+        .filter(url => {
+            return (url.indexOf('_drmnp.ism/') === -1);
+        })
+        .find(url => {
+            return (url.indexOf('_unpnp.ism/') !== -1);
+        });
+}
+// TODO: try to download all other URLs if no good target can be found, or the first try fails
