@@ -1,48 +1,42 @@
 #!/usr/bin/env node
 process.title = 'github.com/a-sync/rtlmost-downloader';
 
+const ora = require('ora');
+
 const {setup, parser, downloader} = require('..');
 
 if (process.argv.length > 2) {
-    setup.parseCmdArgs()
-        .then(download)
-        .catch(err => {
-            console.error(err.message);
-        });
+    setup.parseCmdArgs().then(download).catch(() => {});
 } else {
-    setup.showPrompts()
-        .then(download)
-        .catch(err => {
-            console.error(err.message);
-        });
+    setup.showPrompts().then(download).catch(() => {});
 }
 
-function download(params) {
-    return parser.load(params.url).then(
-        videoUrls => {
-            // Debug: console.debug(JSON.stringify(videoUrls, null, 2));
+async function download(params) {
+    const videoUrls = await parser.load(params.url);
+    // Debug: console.debug(JSON.stringify(videoUrls, null, 2));
 
-            if (Array.isArray(videoUrls) && videoUrls.length > 0) {
-                const targetUrl = bestGuess(videoUrls);
+    if (Array.isArray(videoUrls) && videoUrls.length > 0) {
+        const targetUrls = await checkSources(videoUrls);
+        // Debug: console.debug(JSON.stringify(targetUrls, null, 2));
 
-                if (targetUrl || process.argv.length > 2) {
-                    downloader.download(targetUrl, params.file);
-                } else {
-                    return setup.showMediaSelector(videoUrls, 0).then(
-                        selected => {
-                            downloader.download(selected.media, params.file);
-                        }
-                    );
-                }
+        if (process.argv.length > 2 || targetUrls.length > 0) {
+            if (targetUrls.length === 0) {
+                throw new Error('Nem található letölthető url.');
             }
+
+            return downloader.download(targetUrls.pop(), params.file);
         }
-    ).catch(err => {
-        console.error(err.message);
-    });
+
+        const selected = await setup.showMediaSelector(videoUrls, 0);
+        return downloader.download(selected.media, params.file);
+    }
 }
 
-function bestGuess(videoUrls) {
-    const url = videoUrls
+async function checkSources(videoUrls) {
+    const spinner = ora('Url-ek ellenőrzése...').start();
+    const urls = [];
+
+    const targetUrl = videoUrls
         .filter(url => {
             return (url.indexOf('_drmnp.ism/') === -1);
         })
@@ -50,13 +44,31 @@ function bestGuess(videoUrls) {
             return (url.indexOf('_unpnp.ism/') !== -1);
         });
 
-    if (url && url.indexOf('.fr/v1/resource/s/') !== -1) {
-        const urlId = url.split('.fr/v1/resource/s/')[1].split('_unpnp.ism/')[0];
-        const videoId = urlId.split('/').pop();
+    if (targetUrl) {
+        const targetCheck = await downloader.check(targetUrl);
+        if (targetCheck.meta) {
+            urls.push(targetUrl);
+        }
 
-        return 'https://rtlhu.vod.6cloud.fr/' + urlId + '_unpnp.ism/' + videoId + '_.m3u8';
+        if (targetUrl.indexOf('.fr/v1/resource/s/') !== -1) {
+            const urlId = targetUrl.split('.fr/v1/resource/s/')[1].split('_unpnp.ism/')[0];
+            const videoId = urlId.split('/').pop();
+
+            const hdUrl = 'https://rtlhu.vod.6cloud.fr/' + urlId + '_unpnp.ism/' + videoId + '_.m3u8';
+
+            const hdCheck = await downloader.check(hdUrl);
+            if (hdCheck.meta) {
+                urls.push(hdUrl);
+            }
+        }
     }
 
-    return url;
+    if (urls.length === 0) {
+        spinner.fail('Nem található letölthető url.');
+    } else {
+        spinner.succeed(urls.length + ' db letölthető url.');
+    }
+
+    return urls;
 }
-// TODO: try to download all other URLs if no good target can be found, or the first try fails
+

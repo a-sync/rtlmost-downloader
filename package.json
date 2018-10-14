@@ -19,6 +19,7 @@
   "homepage": "https://github.com/a-sync/rtlmost-downloader",
   "dependencies": {
     "ffmpeg-static": "^2.3.0",
+    "ffprobe-static": "^3.0.0",
     "fluent-ffmpeg": "^2.1.2",
     "got": "^9.2.2",
     "inquirer": "^6.2.0",
