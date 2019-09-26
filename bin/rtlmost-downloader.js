@@ -5,6 +5,10 @@ const ora = require('ora');
 
 const {setup, parser, downloader} = require('..');
 
+console.log('FIGYELEM!');
+console.log('Az rtlmost-downloader fejlesztése nem folytatódik! Helyette használjátok a youtube-dl programot.');
+console.log(' ');
+
 if (process.argv.length > 2) {
     setup.parseCmdArgs().then(download).catch(() => {});
 } else {
